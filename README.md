@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Pitter Sync
 
 ### Sync service for Pitter project
@@ -10,3 +11,6 @@
 - `make lint` - Run linter
 - `make format` - Run auto-formatter for src/
 - `make test` - Run tests
+=======
+# KodeTraineeHW
+>>>>>>> 14a4fa58ef3540770586af02a777d66edd570a28
