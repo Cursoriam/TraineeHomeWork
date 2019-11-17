@@ -1,7 +1,7 @@
 from typing import Sequence
 
-from .ticket import TicketMobileView
+from .client import ClientView
 
 __all__: Sequence[str] = [
-    'TicketMobileView',
+    'ClientView',
 ]

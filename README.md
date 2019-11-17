@@ -1,16 +1,5 @@
 
-# Pitter Sync
 
-### Sync service for Pitter project
+# KodeTraineeHW
 
-
-### Usage
-
-- `make up` - Run in docker-compose
-- `make down` - Stop and remove docker-compose services
-- `make lint` - Run linter
-- `make format` - Run auto-formatter for src/
-- `make test` - Run tests
-
-
-
+# TraineeHW
