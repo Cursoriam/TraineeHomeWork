@@ -12,5 +12,5 @@
 - `make format` - Run auto-formatter for src/
 - `make test` - Run tests
 =======
-# TraineeHW
+
 
