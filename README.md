@@ -1,4 +1,3 @@
-
 # Pitter Sync
 
 ### Sync service for Pitter project
@@ -11,3 +10,4 @@
 - `make lint` - Run linter
 - `make format` - Run auto-formatter for src/
 - `make test` - Run tests
+
