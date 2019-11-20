@@ -1,9 +1,9 @@
 from typing import List, Callable
 
-from .ticket_serializers import TicketPostRequest
-from .ticket_serializers import TicketPostResponse
+from .client_serializers import ClientPostRequest
+from .client_serializers import ClientPostResponse
 
 __all__: List[Callable] = [
-    'TicketPostRequest',
-    'TicketPostResponse',
+    'ClientPostRequest',
+    'ClientPostResponse',
 ]
