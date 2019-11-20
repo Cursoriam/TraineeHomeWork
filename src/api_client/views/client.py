@@ -1,48 +1,41 @@
-import base64
-import io
-import os
+from typing import Dict
 
-from google.cloud import speech
-from google.cloud.speech import enums
-from google.cloud.speech import types
+
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.parsers import MultiPartParser
 from rest_framework.views import APIView
-from rest_framework.response import Response
 
-from src.api_client.validation_serializers import TicketPostRequest
-from src.api_client.validation_serializers import TicketPostResponse
+
+from src.api_client.validation_serializers import ClientPostRequest
+from src.api_client.validation_serializers import ClientPostResponse
 from src.pitter import exceptions
 from src.pitter.decorators import request_post_serializer, response_dict_serializer
+from src.pitter.integrations import GoogleSTT
 
 class ClientView(APIView):
-    def encode_audio_(audio):
-        audio_content=audio.read()
-        return base64.b64encode(audio_content)
+    parser_classes = [MultiPartParser]
+    
+    @classmethod
+    @request_post_serializer(ClientPostRequest)
+    @response_dict_serializer(ClientPostResponse)
+    @swagger_auto_schema(
+        tags=['Pitter: mobile'],
+        request_body=ClientPostRequest,
+        responses={
+            200: ClientPostResponse,
+            401: exceptions.ExceptionResponse,
+            404: exceptions.ExceptionResponse,
+            415: exceptions.ExceptionResponse,
+            500: exceptions.ExceptionResponse,
+        },
+        operation_summary='Преобразование речи в текст',
+        operation_description='Преобразование речи в текст с использованием Google STT',
+    )
+    def post(cls, request) -> Dict[str, str]:
+        transcripted: str = GoogleSTT.transcript(request.data['file'].read())
 
-    def post(self, request):
-        # Instantiates a client
-        client = speech.SpeechClient()
+        return dict(result=transcripted)
 
-        # The name of the audio file to transcribe
-        file_name = os.path.join(
-            os.path.dirname(__file__),
-            'resources',
-            'audio.wav')
-
-        # Loads the audio into memory
-        with io.open(file_name, 'rb') as audio_file:
-            content = audio_file.read()
-            audio = types.RecognitionAudio(content=content)
-
-        config = types.RecognitionConfig(
-            encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
-            sample_rate_hertz=8000,
-            language_code='en-US')
-
-        # Detects speech in the audio file
-        response = client.recognize(config, audio)
-        transcripted=" "
-        for result in response.results:
-            transcripted=transcripted+result.alternatives[0].transcript
-
-        return Response({"{}".format(transcripted)})
+        
+        
 
