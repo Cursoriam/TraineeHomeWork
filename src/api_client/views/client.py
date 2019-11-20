@@ -28,8 +28,8 @@ class ClientView(APIView):
             415: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='ÐŸÑ€ÐµÐ¾Ð±Ñ€Ð°Ð·Ð¾Ð²Ð°Ð½Ð¸Ðµ Ñ€ÐµÑ‡Ð¸ Ð² Ñ‚ÐµÐºÑÑ‚',
-        operation_description='ÐŸÑ€ÐµÐ¾Ð±Ñ€Ð°Ð·Ð¾Ð²Ð°Ð½Ð¸Ðµ Ñ€ÐµÑ‡Ð¸ Ð² Ñ‚ÐµÐºÑÑ‚ Ñ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸ÐµÐ¼ Google STT',
+        operation_summary='Ïðåîáðàçîâàíèå ðå÷è â òåêñò',
+        operation_description='Ïðåîáðàçîâàíèå ðå÷è â òåêñò ñ èñïîëüçîâàíèåì Google STT',
     )
     def post(cls, request) -> Dict[str, str]:
         transcripted: str = GoogleSTT.transcript(request.data['file'].read())
