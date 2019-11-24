@@ -2,19 +2,18 @@ from typing import Dict
 
 
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework.parsers import MultiPartParser
 from rest_framework.views import APIView
+from django.contrib.auth.hashers import make_password
+from django.http import HttpResponse
 
+from api_client.validation_serializers import ClientPostRequest
+from api_client.validation_serializers import ClientPostResponse
+from pitter import exceptions
+from pitter.decorators import request_post_serializer, response_dict_serializer
+from pitter.models import Client
 
-from src.api_client.validation_serializers import ClientPostRequest
-from src.api_client.validation_serializers import ClientPostResponse
-from src.pitter import exceptions
-from src.pitter.decorators import request_post_serializer, response_dict_serializer
-from src.pitter.integrations import GoogleSTT
 
 class ClientView(APIView):
-    parser_classes = [MultiPartParser]
-    
     @classmethod
     @request_post_serializer(ClientPostRequest)
     @response_dict_serializer(ClientPostResponse)
@@ -28,13 +27,53 @@ class ClientView(APIView):
             415: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='œÂÓ·‡ÁÓ‚‡ÌËÂ Â˜Ë ‚ ÚÂÍÒÚ',
-        operation_description='œÂÓ·‡ÁÓ‚‡ÌËÂ Â˜Ë ‚ ÚÂÍÒÚ Ò ËÒÔÓÎ¸ÁÓ‚‡ÌËÂÏ Google STT',
+        operation_summary='–°–æ–∑–¥–∞–Ω–∏–µ –∑–∞—è–≤–∫–∏',
+        operation_description='–°–æ–∑–¥–∞–Ω–∏–µ –∑–∞—è–≤–∫–∏ –≤ —Å–µ—Ä–≤–∏—Å–µ Pitter',
     )
     def post(cls, request) -> Dict[str, str]:
-        transcripted: str = GoogleSTT.transcript(request.data['file'].read())
+        """
+        –°–æ–∑–¥–∞–Ω–∏–µ –∑–∞—è–≤–∫–∏ –∫–ª–∏–µ–Ω—Ç–æ–º
+        :param request:
+        :return:
+        """
+        login: str = request.data['login']
+        password: str = request.data['password']
+        email_address: str = request.data['email_address']
+        enable_notifications: bool = request.data['enable_notifications']
 
-        return dict(result=transcripted)
+        result = Client.create_user(
+            login=login,
+            password=make_password(password),
+            email_address=email_address,
+            enable_notifications=enable_notifications,
+            )
+
+        return result.to_dict()
+
+
+class ClientViewToDelete(APIView):
+    @swagger_auto_schema(
+        tags=['Pitter: mobile'],
+        request_body=ClientPostRequest,
+        responses={
+            200: ClientPostResponse,
+            401: exceptions.ExceptionResponse,
+            404: exceptions.ExceptionResponse,
+            415: exceptions.ExceptionResponse,
+            500: exceptions.ExceptionResponse,
+        },
+        operation_summary='–£–¥–∞–ª–µ–Ω–∏–µ –ø–æ–ª—å–∑–æ–≤–∞—Ç–µ–ª—è',
+        operation_description='–£–¥–∞–ª–µ–Ω–∏–µ –ø–æ–ª—å–∑–æ–≤–∞—Ç–µ–ª—è –≤ —Å–µ—Ä–≤–∏—Å–µ Pitter',
+    )
+    def delete(cls, request, id):
+        try:
+            client = Client.objects.get(id=id)
+        except exceptions.ExceptionResponse:
+            return HttpResponse(204)
+
+        client.delete()
+
+        return HttpResponse(204)
 
         
         
