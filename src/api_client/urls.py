@@ -1,7 +1,8 @@
 from django.urls import path
 
-from src.api_client import views
+from api_client import views
 
 urlpatterns: list = [
-    path('client', views.ClientView.as_view())
+    path('client', views.ClientView.as_view()),
+    path('client/<str:id>', views.ClientViewToDelete.as_view()),
 ]
