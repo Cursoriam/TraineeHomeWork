@@ -11,3 +11,7 @@ class ClientPostRequest(serializers.Serializer):
 class ClientPostResponse(serializers.Serializer):
     id = serializers.CharField(required=True, label='Идентификатор пользователя')
 
+
+class ClientLoginRequest(serializers.Serializer):
+    login=serializers.CharField()
+    password=serializers.CharField()
