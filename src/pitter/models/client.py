@@ -30,10 +30,12 @@ class Client(BaseModel):
     def get_clients() -> QuerySet:
         return Client.objects.find().order_by('created_at')
 
+
 class Pitt(BaseModel):
     user_id=models.ForeignKey('Client', on_delete=models.CASCADE)
     audio_file_path=models.FilePathField()
     speech_transcription=models.CharField(max_length=256)
+
 
 class Follower(BaseModel):
     user_id=models.ManyToManyField('Client')
