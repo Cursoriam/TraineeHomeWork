@@ -1,8 +1,11 @@
 import os
+import datetime
 from typing import List
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'cru)q9q-!=#ip!)(i=rawgbjdfxiyrm+znk05iz=5p*w7r9(yh'
+JWT_PUBLIC_KEY_PATH = os.path.abspath('C:\Passwords_Keys\drf_jwt\keys\public.txt')
+JWT_PRIVATE_KEY_PATH = os.path.abspath('C:\Passwords_Keys\drf_jwt\keys\private.txt')
 
 DEBUG: bool = bool(int(os.getenv('DEBUG', 1)))  # pylint: disable=invalid-envvar-default
 
@@ -16,10 +19,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_jwt',
     'drf_yasg',
     'pitter',
     'api_client',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -71,6 +77,8 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
+
+
 
 LANGUAGE_CODE = 'en-us'
 
