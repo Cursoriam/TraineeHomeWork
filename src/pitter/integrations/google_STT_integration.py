@@ -1,37 +1,50 @@
-import magic
+from base64 import b64encode
+from json import loads
 
+from requests import post
+from requests.exceptions import ConnectionError
 
-from google.cloud import speech
-from google.cloud.speech import enums
-from google.cloud.speech import types
+from pitter.settings import URL
+from pitter.settings import API_KEY
 
-
-from src.pitter.exceptions import ValidationError
 
 class GoogleSTT:
     @classmethod
-    def transcript(cls, audio: bytes) -> str:
-        mime_type=magic.from_buffer(audio, mime=True)
+    def transcript(cls, audio_file: bytes) -> str:
+        try:
+            req = loads(
+                post(URL, params=dict(key=API_KEY, ),
+                        json=dict(
+                        audio=dict(content=b64encode(audio_file).decode(), ),
+                        config=dict(languageCode='en-US', ),
+                         )
+                     ).text
+            )
+        except ConnectionError:
+            raise ConnectionError('Too many requests')
+        print(req)
+        try:
+            results = req['results']
+        except Exception:
+            raise Exception('No param \'results\'')
 
-        if mime_type not in ['audio/flac', 'audio/x-wav']:
-            raise ValidationError(message='Invalid type',status_code=415)
+        transcripted: str = ''
 
-        RATE: int = 8000 # audio rate
+        for result in results:
+            try:
+                alternatives = result['alternatives']
+            except Exception:
+                raise Exception('No param \'alternatives\'')
 
-        # Instantiates a client
-        client = speech.SpeechClient()
-        content = audio
-        audio_data = types.RecognitionAudio(content=content)
-        config = types.RecognitionConfig(
-            encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
-            sample_rate_hertz=RATE,
-            language_code='en-US')
+            try:
+                alternative = alternatives[0]
+            except Exception:
+                raise Exception('There is no index 0 in dict')
 
-        # Detects speech in the audio file
-        response = client.recognize(config, audio_data)
-        transcripted: str = ' '
-        for result in response.results:
-            transcripted=transcripted+result.alternatives[0].transcript
-        
+            try:
+                transcripted = transcripted+alternative['transcript']
+            except Exception:
+                raise Exception('No param \'transcripted\'')
+
         return transcripted
 
