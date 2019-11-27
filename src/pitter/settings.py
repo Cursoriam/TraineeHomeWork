@@ -4,8 +4,8 @@ from typing import List
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'cru)q9q-!=#ip!)(i=rawgbjdfxiyrm+znk05iz=5p*w7r9(yh'
-JWT_PUBLIC_KEY_PATH = os.path.abspath('C:\Passwords_Keys\drf_jwt\keys\public.txt')
-JWT_PRIVATE_KEY_PATH = os.path.abspath('C:\Passwords_Keys\drf_jwt\keys\private.txt')
+JWT_PRIVATE_KEY_PATH = os.path.abspath()
+
 
 DEBUG: bool = bool(int(os.getenv('DEBUG', 1)))  # pylint: disable=invalid-envvar-default
 
