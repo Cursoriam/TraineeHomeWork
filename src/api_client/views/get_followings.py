@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from api_client.validation_serializers import FollowerGetResponse
 from pitter.models import Client
 from pitter import exceptions
+from pitter.utils import check_token
 from pitter.decorators import response_dict_serializer
 
 
@@ -27,6 +28,7 @@ class GetFollowersView(APIView):
                               'пользователя'
     )
     def get(cls, request, id) -> Dict[str, dict]:
+        check_token(request)
         try:
             client = Client.objects.get(id=id)
         except Client.DoesNotExist:

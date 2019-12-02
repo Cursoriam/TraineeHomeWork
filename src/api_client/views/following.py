@@ -7,6 +7,7 @@ from drf_yasg.utils import swagger_auto_schema
 from pitter.models import Following
 from pitter.models import Client
 from pitter.utils import email_notification
+from pitter.utils import check_token
 from pitter import exceptions
 from pitter.decorators import response_dict_serializer
 from api_client.validation_serializers import FollowerPostResponse
@@ -26,6 +27,7 @@ class FollowerView(APIView):
         operation_description='Добавление подписки',
     )
     def post(cls, request, follower_id, following_id) -> Dict[str, str]:
+        check_token(request)
         try:
             client = Client.objects.get(id=follower_id)
         except Client.DoesNotExist:
@@ -65,6 +67,7 @@ class FollowerView(APIView):
         operation_description='Удаление подписки',
     )
     def delete(cls, request, follower_id, following_id):
+        check_token(request)
         try:
             following = Following.objects.get(following_id=following_id,
                                               follower_id=follower_id,)
