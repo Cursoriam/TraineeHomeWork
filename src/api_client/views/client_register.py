@@ -11,6 +11,7 @@ from pitter.decorators import response_dict_serializer
 from api_client.validation_serializers import ClientPostRequest
 from api_client.validation_serializers import ClientPostResponse
 
+
 class ClientView(APIView):
     @classmethod
     @request_post_serializer(ClientPostRequest)
@@ -20,10 +21,8 @@ class ClientView(APIView):
         request_body=ClientPostRequest,
         responses={
             200: ClientPostResponse,
-            401: exceptions.ExceptionResponse,
-            404: exceptions.ExceptionResponse,
-            415: exceptions.ExceptionResponse,
-            500: exceptions.ExceptionResponse,
+            400: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
         },
         operation_summary='Создание заявки',
         operation_description='Создание заявки в сервисе Pitter',
@@ -38,6 +37,10 @@ class ClientView(APIView):
         password: str = request.data['password']
         email_address: str = request.data['email_address']
         enable_notifications: bool = request.data['enable_notifications']
+
+        if Client.objects.get(login=login):
+            raise exceptions.InvalidUserError(message='Invalid login',)
+
         result = Client.create_user(
             login=login,
             password=make_password(password, 'zebra'),
