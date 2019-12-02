@@ -12,4 +12,7 @@
 - `make test` - Run tests
 
 Add your private key path to encode by `RS256` in `JWT_PRIVATE_KEY_PATH = os.path.abspath()` into `pitter/settings.py`
+Add your public key path to encode by `RS256` in `JWT_PUBLIC_KEY_PATH = os.path.abspath()` into `pitter/settings.py`
+
+Add your email host to `EMAIL_HOST`, email host user to `EMAIL_HOST_USER` and your email password to `EMAIL_HOST_PASSWORD` into `pitter/settings.py` 
 
