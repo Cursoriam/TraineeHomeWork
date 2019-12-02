@@ -11,3 +11,5 @@
 - `make format` - Run auto-formatter for src/
 - `make test` - Run tests
 
+Add your private key path to encode by `RS256` in `JWT_PRIVATE_KEY_PATH = os.path.abspath()` into `pitter/settings.py`
+
