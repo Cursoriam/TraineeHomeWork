@@ -4,8 +4,9 @@ from typing import List
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'cru)q9q-!=#ip!)(i=rawgbjdfxiyrm+znk05iz=5p*w7r9(yh'
-JWT_PRIVATE_KEY_PATH = os.path.abspath()
-
+JWT_PRIVATE_KEY_PATH = os.path.abspath('C:\Passwords_Keys\drf_jwt\keys\private.txt')
+JWT_PUBLIC_KEY_PATH = os.path.abspath('C:\Passwords_Keys\drf_jwt\keys\public.txt')
+SPEECH_TRANSCRIPT_URL = 'http://localhost:8118/voice'
 
 DEBUG: bool = bool(int(os.getenv('DEBUG', 1)))  # pylint: disable=invalid-envvar-default
 
@@ -114,3 +115,10 @@ SWAGGER_SETTINGS = {
         'X-Device-Info': {'type': 'apiKey', 'name': 'X-Device-Info', 'in': 'header'},
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST =
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER =
+EMAIL_HOST_PASSWORD =
