@@ -5,6 +5,7 @@ from api_client.validation_serializers import ClientPostRequest
 from api_client.validation_serializers import ClientPostResponse
 from pitter import exceptions
 from pitter.models import Client
+from pitter.utils import check_token
 
 
 class ClientViewToDelete(APIView):
@@ -19,6 +20,7 @@ class ClientViewToDelete(APIView):
         operation_description='Удаление пользователя в сервисе Pitter',
     )
     def delete(cls, request, login):
+        check_token(request)
         try:
             client = Client.objects.get(login=login)
         except Client.DoesNotExist:
