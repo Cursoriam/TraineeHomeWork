@@ -9,8 +9,8 @@ class FollowerPostRequest(serializers.Serializer):
 
 
 class FollowerPostResponse(serializers.Serializer):
-    following_login = serializers.CharField(required=True, label='Логин подписчика')
-
+    follower_id = serializers.CharField(required=True, label='Логин подписчика')
+    following_id = serializers.CharField(required=True, label='Логин подписки')
 
 class FollowerGetResponse(serializers.Serializer):
     followings = serializers.DictField(required=True, label='Список подписок')

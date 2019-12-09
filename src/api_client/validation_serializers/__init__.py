@@ -10,6 +10,8 @@ from .following_serializers import FollowerPostResponse
 from .following_serializers import FollowerGetResponse
 from .pitt_response import PittPostResponse
 from .feed_serializers import FeedGetResponse
+from .search_serializers import SearchPostRequest
+from .search_serializers import SearchPostResponse
 
 __all__: List[Callable] = [
     'ClientPostRequest',
@@ -22,4 +24,6 @@ __all__: List[Callable] = [
     'PittPostResponse',
     'FeedGetResponse',
     'FollowerGetResponse',
+    'SearchPostRequest',
+    'SearchPostResponse',
 ]
