@@ -19,17 +19,20 @@ class CreatePittView(APIView):
     @request_post_serializer(TranscriptPostRequest)
     @response_dict_serializer(PittPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: client'],
+        tags=['Pitt: create_pitt'],
         request_body=TranscriptPostRequest,
+        responses={
+            200: PittPostResponse,
+            400: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
+            500: exceptions.ExceptionResponse,
+        },
         operation_summary='Создание pitt\'а',
         operation_description='Создание pitt\'а пользователем',
     )
-    def post(cls, request, login) -> Dict[str, str]:
-        check_token(request)
-        try:
-            client = Client.objects.get(login=login)
-        except Client.DoesNotExist:
-            raise exceptions.InvalidUserError()
+    def post(cls, request) -> Dict[str, str]:
+        client = check_token(request)
+
         id = client.id
         filepath = request.data['filepath']
 
@@ -37,4 +40,4 @@ class CreatePittView(APIView):
         pitt = Pitt.create_pitt(id, filepath, text)
         client.pitts.add(pitt)
 
-        return dict(pitt_id=pitt.id)
+        return dict(pitt_id=pitt.id, filepath=filepath, text=text)
