@@ -1,9 +1,7 @@
 from typing import Dict
 
-from pitter import exceptions
 from pitter.models import Client
-from pitter.models import Pitt
-
+from pitter import exceptions
 
 def create_token_payload(id: str, login: str,
                          password: str, exp) -> Dict[str, str]:
@@ -18,16 +16,20 @@ def create_token_payload(id: str, login: str,
 
 
 def create_feed(client: Client):
-    feed = {}
-    for following in client.followings.all().values('following_id'):
-        try:
-            tmp = Client.objects.get(id=following).pitts
-            pitts = tmp.all().values('speech_transcription')
-        except None:
-            raise exceptions.NoFollowersError('User does not have pitts')
-        feed[following] = {following: pitts}
+    data = []
+    for following in client.followings.all():
+        following_id = following.following_id
+        following_user = Client.objects.get(id=following_id)
+        following_pitts = following_user.pitts.first()
+        if following_pitts:
+            for pitt in following_user.pitts.all():
+                pitt_data = {'user_id': pitt.user_id,
+                             'filepath': pitt.audio_file_path,
+                             'speech_transcription':
+                                 pitt.speech_transcription}
+                data.append(pitt_data)
 
-        return feed
+    if not data:
+        raise exceptions.NoFollowersError(message='No feed')
 
-
-
+    return data
