@@ -1,14 +1,18 @@
-import os.path
 import jwt
 
 from rest_framework.authentication import get_authorization_header
 
 from pitter import exceptions
-from .token import token_decode
 from pitter.models import Client
+from .token import token_decode
 
 
 def check_filepath(filepath):
+    """
+    Проверка пути к файлу
+    :param filepath:
+    :return:
+    """
     try:
         f = open(filepath)
         f.close()
@@ -19,9 +23,14 @@ def check_filepath(filepath):
 
 
 def check_token(request):
-    try:
-        auth = get_authorization_header(request).split()
-    except None:
+    """
+    Проверка токена
+    :param request:
+    :return:
+    """
+
+    auth = get_authorization_header(request).split()
+    if not auth:
         raise exceptions.TokenError()
 
     if len(auth) > 1:
@@ -30,10 +39,7 @@ def check_token(request):
 
     try:
         token = auth[0]
-        if token == "null":
-            msg = 'Null token not allowed'
-            raise exceptions.TokenError(msg)
-    except UnicodeError:
+    except (UnicodeError, IndexError):
         msg = 'Invalid token header. Token ' \
               'string should not contain invalid characters.'
         raise exceptions.TokenError(msg)
@@ -42,19 +48,24 @@ def check_token(request):
 
 
 def auth_token(token):
-    payload = token_decode(token)
+    """
+    Аутентификация токена
+    :param token:
+    :return:
+    """
+    try:
+        payload = token_decode(token)
+    except jwt.ExpiredSignature or jwt.DecodeError or jwt.InvalidTokenError:
+        raise exceptions.TokenError('Token is invalid', status_code=403)
     id = payload['id']
     login = payload['login']
     password = payload['password']
-    msg = {'Error': "Token mismatch", 'status': "401"}
     try:
         client = Client.objects.get(
             id=id,
             login=login,
             password=password,
         )
-    except jwt.ExpiredSignature or jwt.DecodeError or jwt.InvalidTokenError:
-        raise exceptions.TokenError('Token is invalid', status_code=403)
     except Client.DoesNotExist:
         raise exceptions.TokenError('Token is invalid', status_code=500)
 

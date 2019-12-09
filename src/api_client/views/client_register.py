@@ -17,30 +17,30 @@ class ClientView(APIView):
     @request_post_serializer(ClientPostRequest)
     @response_dict_serializer(ClientPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Client: register'],
         request_body=ClientPostRequest,
         responses={
             200: ClientPostResponse,
             400: exceptions.ExceptionResponse,
+            500: exceptions.ExceptionResponse,
             422: exceptions.ExceptionResponse,
         },
-        operation_summary='Создание заявки',
-        operation_description='Создание заявки в сервисе Pitter',
+        operation_summary='Регистрация пользователя',
+        operation_description='Регистрация пользователя в сервисе Pitter',
     )
     def post(cls, request) -> Dict[str, str]:
         """
-        Создание заявки клиентом
+        Запрос на регистрацию пользователя
         :param request:
-        :return:
+        :return: Dict[str, str]
         """
         login: str = request.data['login']
         password: str = request.data['password']
         email_address: str = request.data['email_address']
         enable_notifications: bool = request.data['enable_notifications']
 
-        if Client.objects.get(login=login):
-            raise exceptions.InvalidUserError(message='Invalid login',)
-
+        if Client.objects.filter(login=login).exists():
+            raise exceptions.InvalidUserError(message='User already exists',)
         result = Client.create_user(
             login=login,
             password=make_password(password, 'zebra'),

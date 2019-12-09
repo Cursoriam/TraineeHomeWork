@@ -9,8 +9,9 @@ from pitter.utils import check_token
 
 
 class ClientViewToDelete(APIView):
+    @classmethod
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Client: delete'],
         request_body=ClientPostRequest,
         responses={
             200: ClientPostResponse,
@@ -20,6 +21,12 @@ class ClientViewToDelete(APIView):
         operation_description='Удаление пользователя в сервисе Pitter',
     )
     def delete(cls, request, login):
+        """
+        Запрос на удаление пользователя
+        :param request:
+        :param login:
+        :return:
+        """
         check_token(request)
         try:
             client = Client.objects.get(login=login)
