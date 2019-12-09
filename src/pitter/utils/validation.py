@@ -30,10 +30,7 @@ def check_token(request):
 
     try:
         token = auth[0]
-        if token == "null":
-            msg = 'Null token not allowed'
-            raise exceptions.TokenError(msg)
-    except UnicodeError:
+    except (UnicodeError, IndexError):
         msg = 'Invalid token header. Token ' \
               'string should not contain invalid characters.'
         raise exceptions.TokenError(msg)
@@ -42,19 +39,19 @@ def check_token(request):
 
 
 def auth_token(token):
-    payload = token_decode(token)
+    try:
+        payload = token_decode(token)
+    except jwt.ExpiredSignature or jwt.DecodeError or jwt.InvalidTokenError:
+        raise exceptions.TokenError('Token is invalid', status_code=403)
     id = payload['id']
     login = payload['login']
     password = payload['password']
-    msg = {'Error': "Token mismatch", 'status': "401"}
     try:
         client = Client.objects.get(
             id=id,
             login=login,
             password=password,
         )
-    except jwt.ExpiredSignature or jwt.DecodeError or jwt.InvalidTokenError:
-        raise exceptions.TokenError('Token is invalid', status_code=403)
     except Client.DoesNotExist:
         raise exceptions.TokenError('Token is invalid', status_code=500)
 
