@@ -10,7 +10,7 @@ from pitter.utils import check_token
 
 class ClientViewToDelete(APIView):
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Client: delete'],
         request_body=ClientPostRequest,
         responses={
             200: ClientPostResponse,

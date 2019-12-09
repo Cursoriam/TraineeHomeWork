@@ -1,9 +1,9 @@
 from datetime import datetime
+from datetime import timedelta
 from typing import Dict
 
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
-from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.hashers import make_password
 
 from api_client.validation_serializers import ClientLoginRequest
@@ -21,7 +21,7 @@ class UserAuthenticate(APIView):
     @request_post_serializer(ClientLoginRequest)
     @response_dict_serializer(ClientLoginResponse)
     @swagger_auto_schema(
-        tags=['User authentication'],
+        tags=['Client: authentication'],
         request_body=ClientLoginRequest,
         responses={
             200: ClientLoginResponse,
@@ -32,6 +32,11 @@ class UserAuthenticate(APIView):
         operation_description='Аутентификация пользователя в сервисе Pitter',
     )
     def post(cls, request) -> Dict[str, str]:
+        """
+        Запрос на аутентификацию пользователя
+        :param request:
+        :return: Dict[str, str]
+        """
         login = request.data['login']
         password = make_password(request.data['password'], 'zebra')
         try:
@@ -39,7 +44,7 @@ class UserAuthenticate(APIView):
         except Client.DoesNotExist:
             raise exceptions.InvalidUserError()
 
-        exp = datetime.utcnow() + api_settings.JWT_EXPIRATION_DELTA
+        exp = datetime.utcnow() + timedelta(seconds=3600)
 
         payload = create_token_payload(client.id, client.login,
                                        client.password, exp)
