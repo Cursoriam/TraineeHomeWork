@@ -26,6 +26,12 @@ class FollowerView(APIView):
         operation_description='Добавление подписки',
     )
     def post(cls, request, following_id) -> Dict[str, str]:
+        """
+        Запрос на добавление подписки
+        :param request:
+        :param following_id:
+        :return:
+        """
         client = check_token(request)
 
         try:
@@ -56,6 +62,12 @@ class FollowerView(APIView):
         operation_description='Удаление подписки',
     )
     def delete(cls, request, following_id):
+        """
+        Запрос на удаление подписки
+        :param request:
+        :param following_id:
+        :return:
+        """
         client = check_token(request)
         try:
             following = Following.objects.get(following_id=following_id,

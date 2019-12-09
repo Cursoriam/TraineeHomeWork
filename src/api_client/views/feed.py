@@ -8,7 +8,6 @@ from pitter import exceptions
 from pitter.decorators import response_dict_serializer
 from pitter.utils import check_token
 from pitter.utils import create_feed
-from pitter.models import Client
 from api_client.validation_serializers import FeedGetResponse
 
 
@@ -24,6 +23,12 @@ class FeedView(APIView):
         operation_description='Лента пользователя',
     )
     def get(cls, request, page) -> Dict[str, list]:
+        """
+        Запрос на демонстрацию ленты
+        :param request:
+        :param page:
+        :return:
+        """
         client = check_token(request)
 
         following = client.followings.first()

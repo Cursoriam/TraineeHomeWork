@@ -41,6 +41,6 @@ class SearchView(APIView):
         if not result:
             raise exceptions.NoFollowersError(message='No such users')
 
-        result = sorted(result, key = lambda i: i['login'])
+        result = sorted(result, key=lambda i: i['login'])
 
         return dict(result=result)

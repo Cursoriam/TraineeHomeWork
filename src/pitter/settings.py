@@ -117,8 +117,8 @@ SWAGGER_SETTINGS = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST =
+EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER =
-EMAIL_HOST_PASSWORD =
+EMAIL_HOST_USER = 'postmaster@sandboxdac0ae95a1164149abd493909aba3b32.mailgun.org'
+EMAIL_HOST_PASSWORD = '27b65df366007f9567f5b2e1cca62ff7-f7910792-2e65ad07'

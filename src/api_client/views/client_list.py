@@ -26,6 +26,11 @@ class ClientListView(APIView):
                               'Pitter',
     )
     def get(cls, request) -> Dict[str, list]:
+        """
+        Запрос на получение списка пользователей
+        :param request:
+        :return:
+        """
         check_token(request)
         client_list = []
         for client in Client.objects.all():

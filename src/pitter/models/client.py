@@ -33,10 +33,3 @@ class Client(BaseModel):
     @staticmethod
     def get_clients() -> QuerySet:
         return Client.objects.find().order_by('created_at')
-
-
-
-
-
-
-

@@ -7,7 +7,6 @@ from pitter.utils import check_token
 from pitter.utils import speech_transcript
 from pitter import exceptions
 from pitter.models import Pitt
-from pitter.models import Client
 from pitter.decorators import request_post_serializer
 from pitter.decorators import response_dict_serializer
 from api_client.validation_serializers import TranscriptPostRequest
@@ -31,6 +30,11 @@ class CreatePittView(APIView):
         operation_description='Создание pitt\'а пользователем',
     )
     def post(cls, request) -> Dict[str, str]:
+        """
+        Запрос на создание питта
+        :param request:
+        :return:
+        """
         client = check_token(request)
 
         id = client.id

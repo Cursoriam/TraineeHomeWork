@@ -4,7 +4,6 @@ from drf_yasg.utils import swagger_auto_schema
 from pitter import exceptions
 from pitter.utils import check_token
 from pitter.models import Pitt
-from pitter.models import Client
 
 
 class DeletePittView(APIView):

@@ -3,8 +3,17 @@ from typing import Dict
 from pitter.models import Client
 from pitter import exceptions
 
+
 def create_token_payload(id: str, login: str,
                          password: str, exp) -> Dict[str, str]:
+    """
+    Создание payload для токена
+    :param id:
+    :param login:
+    :param password:
+    :param exp:
+    :return:
+    """
     payload = {
         'id': id,
         'login': login,
@@ -16,6 +25,11 @@ def create_token_payload(id: str, login: str,
 
 
 def create_feed(client: Client):
+    """
+    Создание ленты
+    :param client:
+    :return:
+    """
     data = []
     for following in client.followings.all():
         following_id = following.following_id

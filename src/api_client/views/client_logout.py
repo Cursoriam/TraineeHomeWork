@@ -5,14 +5,12 @@ from typing import Dict
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
-from api_client.validation_serializers import ClientLoginRequest
 from api_client.validation_serializers import ClientLoginResponse
 from pitter import exceptions
 from pitter.decorators import response_dict_serializer
 from pitter.utils import create_token_payload
 from pitter.utils import token_encode
 from pitter.utils import check_token
-from pitter.models import Client
 
 
 class UserLogoutView(APIView):

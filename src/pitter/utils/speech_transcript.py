@@ -1,12 +1,17 @@
-import requests
 import json
+import requests
 
-from .validation import check_filepath
-from pitter import settings
 from pitter import exceptions
+from pitter import settings
+from .validation import check_filepath
 
 
 def speech_transcript(filepath):
+    """
+    Расшифровка речи из аудио сообщения
+    :param filepath:
+    :return:
+    """
     check_filepath(filepath)
     filepath = {'filepath': filepath}
     try:
