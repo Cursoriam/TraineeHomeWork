@@ -14,7 +14,7 @@ coreapi==2.3.3
 coreschema==0.0.4
 coverage==4.5.4
 cryptography==2.8
-Django==2.2.7
+Django==2.2.13
 djangorestframework==3.10.3
 docker==4.1.0
 docker-compose==1.25.0
