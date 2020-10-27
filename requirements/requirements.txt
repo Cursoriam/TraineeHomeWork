@@ -13,7 +13,7 @@ colorama==0.4.1
 coreapi==2.3.3
 coreschema==0.0.4
 coverage==4.5.4
-cryptography==2.8
+cryptography==3.2
 Django==2.2.7
 djangorestframework==3.10.3
 docker==4.1.0
