@@ -15,7 +15,7 @@ coreschema==0.0.4
 coverage==4.5.4
 cryptography==2.8
 Django==2.2.7
-djangorestframework==3.10.3
+djangorestframework==3.11.2
 docker==4.1.0
 docker-compose==1.25.0
 dockerpty==0.4.1
