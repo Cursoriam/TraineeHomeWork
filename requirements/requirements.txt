@@ -61,7 +61,7 @@ pytest-cover==3.0.0
 pytest-coverage==0.0
 pytz==2019.3
 pywin32==227
-PyYAML==5.1.2
+PyYAML==5.4
 regex==2019.11.1
 requests==2.22.0
 rsa==4.0
